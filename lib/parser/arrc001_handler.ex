@@ -11,16 +11,24 @@ defmodule Parser.Arrc001Handler do
     {:ok, %{bcarq: bcarq, records: records}}
   end
 
-  def handle_event(:start_element, {name, _attributes}, state) when name == "Grupo_ARRC001_UsuFinalRecbdr" do
+  #Records
+  def handle_event(:start_element, {"Grupo_ARRC001_UsuFinalRecbdr", _attributes}, state) do
     {:ok, %{state| current_record: %UnidadeRecebivel{}} }
   end
 
+  def handle_event(:end_element, "Grupo_ARRC001_UsuFinalRecbdr", state) do
+    {:ok, %{state | records: [state.current_record | state.records], current_record: nil, current_tag: nil}}
+  end
+
+  ##Inícios de tags de tipos conhecidos
   def handle_event(:start_element, {name, _attributes}, %{current_record: %Bcarq{}} = state) do
     {:ok, %{state| current_tag: name} }
   end
+
   def handle_event(:start_element, {name, _attributes}, %{current_record: %UnidadeRecebivel{}} = state) do
     {:ok, %{state| current_tag: name} }
   end
+
 
   def handle_event(:characters, chars, %{current_record: %UnidadeRecebivel{}} = state) do
     case state.current_tag do
@@ -33,12 +41,11 @@ defmodule Parser.Arrc001Handler do
     end
   end
 
-  def handle_event(:end_element, "Grupo_ARRC001_UsuFinalRecbdr", state) do
-    {:ok, %{state | records: [state.current_record | state.records], current_record: nil, current_tag: nil}}
-  end
+
 
   ########## PARSE BCARQ ############
 
+  ##BCARQ
   def handle_event(:start_element, {"BCARQ", _attributes}, state) do
     {:ok, %{state| current_record: %Bcarq{}} }
   end
@@ -47,6 +54,7 @@ defmodule Parser.Arrc001Handler do
     {:ok, %{state | bcarq: state.current_record , current_record: nil, current_tag: nil}}
   end
 
+  #CAMPOS
   def handle_event(:characters, chars, %{current_record: %Bcarq{}} = state) do
     # IO.inspect(state.current_tag)
     case state.current_tag do
