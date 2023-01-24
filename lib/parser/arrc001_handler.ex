@@ -12,45 +12,32 @@ defmodule Parser.Arrc001Handler do
   end
 
   def handle_event(:start_element, {name, _attributes}, state) when name == "Grupo_ARRC001_UsuFinalRecbdr" do
-    state = {:ok, %{state| current_record: %UnidadeRecebivel{}} }
-    # IO.inspect(state)
-    state
+    {:ok, %{state| current_record: %UnidadeRecebivel{}} }
   end
 
-  def handle_event(:start_element, {"CNPJ_CPFUsuFinalRecbdr", _attributes}, %{current_record: %UnidadeRecebivel{}} = state) do
-    state = {:ok, %{state| current_tag: "CNPJ_CPFUsuFinalRecbdr"} }
-    # IO.inspect(state)
-    state
+  def handle_event(:start_element, {name, _attributes}, %{current_record: %Bcarq{}} = state) do
+    {:ok, %{state| current_tag: name} }
   end
-  def handle_event(:characters, chars, %{current_tag: "CNPJ_CPFUsuFinalRecbdr", current_record: %UnidadeRecebivel{}} = state) do
-    state = {:ok, %{state | current_record: %{state.current_record | cnpf_cnpf_ufr: chars}}}
-    # IO.inspect(state)
-    state
+  def handle_event(:start_element, {name, _attributes}, %{current_record: %UnidadeRecebivel{}} = state) do
+    {:ok, %{state| current_tag: name} }
   end
 
+  def handle_event(:characters, chars, %{current_record: %UnidadeRecebivel{}} = state) do
+    case state.current_tag do
+      "CNPJ_CPFUsuFinalRecbdr"  -> {:ok, %{state | current_record: %{state.current_record | cnpf_cnpf_ufr: chars}}}
+      "CodInstitdrArrajPgto"    -> {:ok, %{state | current_record: %{state.current_record | cd_arranjo: chars}}}
+      "DtPrevtLiquid"           -> {:ok, %{state | current_record: %{state.current_record | dt_prevt_liq: Date.from_iso8601(chars)}}}
+      "VlrTot"                  -> {:ok, %{state | current_record: %{state.current_record | vlr_total: Decimal.new(chars)}}}
+      "VlrPrevtLiquid"          -> {:ok, %{state | current_record: %{state.current_record | vlr_prevt_liq: Decimal.new(chars)}}}
+      _ -> {:ok, state}
+    end
+  end
 
-
-  def handle_event(:end_element, "Grupo_ARRC001_UsuFinalRecbdr", state),
-  do: {:ok, %{state | records: [state.current_record | state.records], current_record: nil, current_tag: nil}}
-
-
-
+  def handle_event(:end_element, "Grupo_ARRC001_UsuFinalRecbdr", state) do
+    {:ok, %{state | records: [state.current_record | state.records], current_record: nil, current_tag: nil}}
+  end
 
   ########## PARSE BCARQ ############
-
-
-  ##campos
-  def handle_event(:start_element, {"NomArq", _attributes}, %{current_record: %Bcarq{}} = state) do
-    state = {:ok, %{state| current_tag: "NomArq"} }
-    IO.inspect(state)
-    state
-  end
-
-  def handle_event(:characters, chars, %{current_tag: "NomArq", current_record: %Bcarq{}} = state) do
-    state = {:ok, %{state | current_record: %{state.current_record | nm_arq: chars}}}
-    IO.inspect(state)
-    state
-  end
 
   def handle_event(:start_element, {"BCARQ", _attributes}, state) do
     {:ok, %{state| current_record: %Bcarq{}} }
@@ -60,12 +47,22 @@ defmodule Parser.Arrc001Handler do
     {:ok, %{state | bcarq: state.current_record , current_record: nil, current_tag: nil}}
   end
 
-  #### DEFAULTS
-
-  def handle_event(:start_element, {_tag, _attributes}, state) do
-    {:ok, state}
+  def handle_event(:characters, chars, %{current_record: %Bcarq{}} = state) do
+    # IO.inspect(state.current_tag)
+    case state.current_tag do
+      "NomArq"            -> {:ok, %{state | current_record: %{state.current_record | nm_arq: chars}}}
+      "NumCtrlEmis"       -> {:ok, %{state | current_record: %{state.current_record | num_ctrl_emissor: chars}}}
+      "ISPBEmissor"       -> {:ok, %{state | current_record: %{state.current_record | ispb_emissor: chars}}}
+      "ISPBDestinatario"  -> {:ok, %{state | current_record: %{state.current_record | ispb_dest: chars}}}
+      "DtHrArq"           -> {:ok, %{state | current_record: %{state.current_record | dh_arq: chars}}}
+      "DtRef"             -> {:ok, %{state | current_record: %{state.current_record | dt_ref: chars}}}
+      _ -> {:ok, state}
+    end
   end
 
+  #### DEFAULTS
+
+  def handle_event(:start_element, {_tag, _attributes}, state), do: {:ok, state}
   def handle_event(:end_element, _name, state), do: {:ok, %{state | current_tag: nil}}
   def handle_event(:characters, _chars, state),  do: {:ok, state}
 end

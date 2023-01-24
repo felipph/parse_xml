@@ -4,7 +4,5 @@ defmodule Parser.ArrcdocHandler do
   alias Parser.DefaultHandler
 
 
-
-
   require DefaultHandler;
 end

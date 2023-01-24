@@ -3,10 +3,10 @@ defmodule ParseXml do
     xml_file = "./arrc001/ARRC001_01027058_20200110_00002.xml"
     xsd = "./arrc001/ARRC001.xsd"
 
-    case :erlsom.compile_xsd_file(xsd, include_dirs: ["arrc001"]) do
-      {:error, error_desc} -> IO.inspect(error_desc)
-      {:ok, model} -> validade(xml_file, model)
-    end
+    # case :erlsom.compile_xsd_file(xsd, include_dirs: ["arrc001"]) do
+    #   {:error, error_desc} -> IO.inspect(error_desc)
+    #   {:ok, model} -> validade(xml_file, model)
+    # end
 
     # ok, agora parse para registros:
 
@@ -14,8 +14,10 @@ defmodule ParseXml do
       File.stream!(xml_file)
       |> Stream.filter(&(&1 != "\n "))
 
-    {:ok, state} = Saxy.parse_stream(stream, Parser.Arrc001Handler, nil)
-    {:ok, state}
+    case Saxy.parse_stream(stream, Parser.Arrc001Handler, nil) do
+      {:ok, state} -> {:ok, state}
+      {:error, err} -> {:error, err}
+    end
   end
 
   def validade(xml_file, model) do
