@@ -15,7 +15,7 @@ defmodule ParseXml do
       |> Stream.filter(&(&1 != "\n "))
 
     {:ok, state} = Saxy.parse_stream(stream, Parser.Arrc001Handler, nil)
-    IO.inspect(state)
+    {:ok, state}
   end
 
   def validade(xml_file, model) do

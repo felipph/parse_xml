@@ -4,8 +4,8 @@ defmodule ParseXmlTest do
   alias Struct.Bcarq
 
   test "Parse ARRC001" do
-    ParseXml.parse_xml()
-    nil
+    {:ok, state} = ParseXml.parse_xml()
+    # IO.inspect(state)
   end
 
   test "TypeCheck" do
