@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.cip-bancos.org.br/ARQ/ARRC001PRO.xsd" xmlns:cat="http://www.cip-bancos.org.br/catalogomsg" id="ARRC001PRO" targetNamespace="http://www.cip-bancos.org.br/ARQ/ARRC001PRO.xsd" elementFormDefault="qualified" version="10.1">
+
+    <xs:include schemaLocation="ARRCTIPOS.xsd"/>
+
+    <!-- Definição do arquivo -->
+    <xs:element name="ARRCDOC" type="ARRCDOCPROComplexType">
+        <xs:annotation>
+            <xs:documentation>
+                <cat:InfEvento>
+                    <cat:Evento>
+                        ARRC001PRO - R2C3 informa protocolo de recebimento do arquivo ARRC001.
+                    </cat:Evento>
+                    <cat:Descricao>
+                        Destinado ao R2C3 informar o recebimento do arquivo ARRC001.
+                    </cat:Descricao>
+                    <cat:Observacao>
+                    </cat:Observacao>
+                    <cat:Servico>
+                    </cat:Servico>
+                    <cat:TipoFluxo>
+                    </cat:TipoFluxo>
+                </cat:InfEvento>
+            </xs:documentation>
+        </xs:annotation>
+    </xs:element>
+</xs:schema>

@@ -1,0 +1,467 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.cip-bancos.org.br/ARQ/ARRC001.xsd" xmlns:cat="http://www.cip-bancos.org.br/catalogomsg" id="ARRC001" targetNamespace="http://www.cip-bancos.org.br/ARQ/ARRC001.xsd" elementFormDefault="qualified" version="10.1">
+
+    <xs:include schemaLocation="ARRCTIPOS.xsd"/>
+
+    <!-- Definição do ARRCDOC -->
+    <xs:element name="ARRCDOC" type="ARRCDOCComplexType">
+        <xs:annotation>
+            <xs:documentation>
+                <cat:InfEvento>
+                    <cat:Evento>
+                        ARRC001 - Registro Atualização Recebiveis
+                    </cat:Evento>
+                    <cat:Descricao>
+                        Registro Atualização Recebiveis.
+                    </cat:Descricao>
+                </cat:InfEvento>
+            </xs:documentation>
+        </xs:annotation>
+    </xs:element>
+
+	<!-- Definição do ARRCDOC do arquivo -->
+	<xs:complexType name="ARRCDOCComplexType">
+		<xs:sequence>
+			<xs:element name="BCARQ" type="BCARQComplexType"/>
+			<xs:element name="SISARQ" type="SISARQComplexType"/>
+			<xs:element name="ESTARQ" type="ESTARQSimpleType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+
+    <!-- Definição do SISARQ -->
+    <xs:complexType name="SISARQComplexType">
+        <xs:choice>
+            <xs:element name="ARRC001" type="ARRC001ComplexType">
+                <xs:annotation>
+                    <xs:documentation>
+                        <cat:InfArquivo>
+                            <cat:Descricao>Registro Atualização Recebiveis.
+                            </cat:Descricao>
+                            <cat:Emissor>Participante</cat:Emissor>
+                            <cat:Destinatario>R2C3</cat:Destinatario>
+                        </cat:InfArquivo>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="ARRC001RET" type="ARRC001RETComplexType">
+                <xs:annotation>
+                    <xs:documentation>
+                        <cat:InfArquivo>
+                            <cat:Descricao>Retorno do registro Atualização Recebiveis.
+                            </cat:Descricao>
+                            <cat:Emissor>R2C3</cat:Emissor>
+                            <cat:Destinatario>Participante</cat:Destinatario>
+                        </cat:InfArquivo>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:choice>
+    </xs:complexType>
+
+	<xs:complexType name="ARRC001ComplexType">
+		<xs:sequence>
+			<xs:element name="Grupo_ARRC001_RegRecbvl" type="Grupo_ARRC001_RegRecbvl_ComplexType">
+                <xs:annotation>
+                    <xs:documentation>
+                        Grupo Registro de Recebível
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+		</xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="Grupo_ARRC001_RegRecbvl_ComplexType">
+        <xs:sequence>
+            <xs:element name="IdentdPartPrincipal" type="IdentificadorParticipante">
+                <xs:annotation>
+                    <xs:documentation>
+                        Identificador Participante Principal
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="IdentdPartAdmtd" type="IdentificadorParticipante">
+                <xs:annotation>
+                    <xs:documentation>
+                        Identificador Participante Administrado
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Grupo_ARRC001_UsuFinalRecbdr" type="Grupo_ARRC001_UsuFinalRecbdr_ComplexType" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>
+                        Grupo Usuário Final Recebedor
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+	
+	<xs:complexType name="Grupo_ARRC001_UsuFinalRecbdr_ComplexType">
+		<xs:sequence>
+			<xs:element name="CNPJ_CPFUsuFinalRecbdr" type="CNPJ_CPF">
+				<xs:annotation>
+					<xs:documentation>
+						CNPJ ou CPF Usuário Final Recebedor
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+            <xs:element name="Grupo_ARRC001_ArrajPgto" type="Grupo_ARRC001_ArrajPgto_ComplexType" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>
+                        Grupo Arranjo de Pagamento
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+    <xs:complexType name="Grupo_ARRC001_ArrajPgto_ComplexType">
+        <xs:sequence>
+            <xs:element name="CodInstitdrArrajPgto" type="CodInstitdrArrajPgto">
+                <xs:annotation>
+                    <xs:documentation>
+                        Código Instituidor Arranjo Pagamento
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Grupo_ARRC001_UniddRecbvl" type="Grupo_ARRC001_UniddRecbvl_ComplexType" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>
+                        Grupo Unidade de Recebível
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="Grupo_ARRC001_UniddRecbvl_ComplexType">
+        <xs:sequence>
+            <xs:element name="DtPrevtLiquid" type="Data">
+                <xs:annotation>
+                    <xs:documentation>
+                        Data Prevista Liquidação
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="VlrTot" type="Valor">
+                <xs:annotation>
+                    <xs:documentation>
+                        Valor Total
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="VlrPreContrd" type="Valor">
+                <xs:annotation>
+                    <xs:documentation>
+                        Valor Pre Contratado
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Grupo_ARRC001_DomclBanc" type="Grupo_ARRC001_DomclBanc_ComplexType" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>
+                        Grupo Domicilios Bancários
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="Grupo_ARRC001_DomclBanc_ComplexType">
+        <xs:sequence>
+            <xs:element name="CNPJ_CPFTitlarCt" type="CNPJ_CPF">
+                <xs:annotation>
+                    <xs:documentation>
+                        CNPJ ou CPF Titular Conta
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="ISPBBcoRecbdr" type="ISPB">
+                <xs:annotation>
+                    <xs:documentation>
+                        ISPB Banco Recebedor
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="TpCt" type="TpConta">
+                <xs:annotation>
+                    <xs:documentation>
+                        Tipo Conta
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Ag" type="Agencia" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>
+                        Agência
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Ct" type="CtBancaria" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>
+                        Conta
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="CtPgto" type="CtPgto" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>
+                        Conta Pagamento
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="VlrPrevtLiquid" type="Valor">
+                <xs:annotation>
+                    <xs:documentation>
+                        Valor Previsto Liquidação
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="DtEftLiquid" type="Data" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>
+                        Data Efetiva Liquidação
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="VlrEftLiquid" type="Valor" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>
+                        Valor Efetivo Liquidação
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="IdentdOp" type="IdentificadorOperacao" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>
+                        Identificador CIP da Operação
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="ARRC001RETComplexType">
+        <xs:sequence>
+            <xs:element name="Grupo_ARRC001RET_RegRecbvl" type="Grupo_ARRC001RET_RegRecbvl_ComplexType">
+                <xs:annotation>
+                    <xs:documentation>
+                        Grupo Consulta Unidade Recebível
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="Grupo_ARRC001RET_RegRecbvl_ComplexType">
+        <xs:sequence>
+            <xs:element name="SitRetReq" type="SitRet">
+                <xs:annotation>
+                    <xs:documentation>
+                        Situação de Retorno da Requisição
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="IdentdPartPrincipal" type="IdentificadorParticipanteCodErr">
+                <xs:annotation>
+                    <xs:documentation>
+                        Identificador Participante Principal
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="IdentdPartAdmtd" type="IdentificadorParticipanteCodErr">
+                <xs:annotation>
+                    <xs:documentation>
+                        Identificador Participante Administrado
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Grupo_ARRC001RET_UsuFinalRecbdr" type="Grupo_ARRC001RET_UsuFinalRecbdr_ComplexType" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>
+                        Grupo Usuário Final Recebedor
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="Grupo_ARRC001RET_UsuFinalRecbdr_ComplexType">
+        <xs:sequence>
+            <xs:element name="CNPJ_CPFUsuFinalRecbdr" type="CNPJ_CPFCodErr">
+                <xs:annotation>
+                    <xs:documentation>
+                        CNPJ ou CPF Usuário Final Recebedor
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Grupo_ARRC001RET_ArrajPgto" type="Grupo_ARRC001RET_ArrajPgto_ComplexType" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>
+                        Grupo Arranjo de Pagamento
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="Grupo_ARRC001RET_ArrajPgto_ComplexType">
+        <xs:sequence>
+            <xs:element name="CodInstitdrArrajPgto" type="CodInstitdrArrajPgtoErr">
+                <xs:annotation>
+                    <xs:documentation>
+                        Código Instituidor Arranjo Pagamento
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Grupo_ARRC001RET_UniddRecbvlActo" type="Grupo_ARRC001_UniddRecbvlActo_ComplexType" minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>
+                        Grupo Unidade de Recebível
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Grupo_ARRC001RET_UniddRecbvlRecsdo" type="Grupo_ARRC001_UniddRecbvlRecsdo_ComplexTypeCodErr" minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>
+                        Grupo Unidade de Recebível
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="Grupo_ARRC001_UniddRecbvlActo_ComplexType">
+        <xs:sequence>
+            <xs:element name="DtPrevtLiquid" type="DataCodErr">
+                <xs:annotation>
+                    <xs:documentation>
+                        Data Prevista Liquidação
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="Grupo_ARRC001_UniddRecbvlRecsdo_ComplexType">
+        <xs:sequence>
+            <xs:element name="DtPrevtLiquid" type="DataCodErr">
+                <xs:annotation>
+                    <xs:documentation>
+                        Data Prevista Liquidação
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="VlrTot" type="ValorCodErr">
+                <xs:annotation>
+                    <xs:documentation>
+                        Valor Total
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="VlrPreContrd" type="ValorCodErr">
+                <xs:annotation>
+                    <xs:documentation>
+                        Valor Previsto pré-contratado
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Grupo_ARRC001RET_DomclBancRecsdo" type="Grupo_ARRC001_DomclBancRecsdo_ComplexType" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>
+                        Grupo Banco Domicílio Recusado
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="Grupo_ARRC001_UniddRecbvlRecsdo_ComplexTypeCodErr">
+        <xs:annotation>
+            <xs:documentation>
+                Unidade Recebível Recusada com atributo para retorno de código de erro.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="Grupo_ARRC001_UniddRecbvlRecsdo_ComplexType">
+                <xs:attribute name="CodErro" type="CodErro" use="optional"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="Grupo_ARRC001_DomclBancRecsdo_ComplexType">
+        <xs:sequence>
+            <xs:element name="CNPJ_CPFTitlarCt" type="CNPJ_CPFCodErr">
+                <xs:annotation>
+                    <xs:documentation>
+                        CNPJ ou CPF Titular Conta
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="ISPBBcoRecbdr" type="ISPBCodErr">
+                <xs:annotation>
+                    <xs:documentation>
+                        ISPB Banco Recebedor
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="TpCt" type="TpContaCodErr">
+                <xs:annotation>
+                    <xs:documentation>
+                        Tipo Conta
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Ag" type="AgenciaCodErr" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>
+                        Agência
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Ct" type="CtBancariaCodErr" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>
+                        Conta
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="CtPgto" type="CtPgtoCodErr" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>
+                        Conta Pagamento
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="VlrPrevtLiquid" type="ValorCodErr">
+                <xs:annotation>
+                    <xs:documentation>
+                        Valor Previsto Liquidação
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="DtEftLiquid" type="DataCodErr" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>
+                        Data Efetiva Liquidação
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="VlrEftLiquid" type="ValorCodErr" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>
+                        Valor Efetivo Liquidação
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="IdentdOp" type="IdentificadorOperacaoCodErr" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>
+                        Identificador CIP da Operação
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

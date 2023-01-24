@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.cip-bancos.org.br/ARQ/ARRC001ERR.xsd" xmlns:cat="http://www.cip-bancos.org.br/catalogomsg" id="ARRC001ERR" targetNamespace="http://www.cip-bancos.org.br/ARQ/ARRC001ERR.xsd" elementFormDefault="qualified" version="10.1">
+
+    <xs:include schemaLocation="ARRCTIPOS.xsd"/>
+
+    <!-- Definicao do arquivo -->
+    <xs:element name="ARRCDOC" type="ARRCDOCERRComplexType">
+        <xs:annotation>
+            <xs:documentation>
+                <cat:InfEvento>
+                    <cat:Evento>ARRC001ERR - R2C3 informa erro no arquivo de Registro / Atualização de Recebíveis
+                    </cat:Evento>
+                    <cat:Descricao>Destinado ao R2C3 informar erro no arquivo de Registro / Atualização de Recebíveis.
+                    </cat:Descricao>
+                    <cat:Servico>Erro no arquivo de Registro / Atualização de Recebíveis.</cat:Servico>
+                    <cat:TipoFluxo>
+                    </cat:TipoFluxo>
+                </cat:InfEvento>
+            </xs:documentation>
+        </xs:annotation>
+    </xs:element>
+</xs:schema>
