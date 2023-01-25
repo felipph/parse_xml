@@ -16,9 +16,28 @@ defmodule Parser.Arrc001Handler do
     {:ok, %{state| current_record: %UnidadeRecebivel{}} }
   end
 
-  def handle_event(:end_element, "Grupo_ARRC001_UsuFinalRecbdr", state) do
-    {:ok, %{state | records: [state.current_record | state.records], current_record: nil, current_tag: nil}}
+  def handle_event(:end_element, "Grupo_ARRC001_DomclBanc", %{current_record: %UnidadeRecebivel{}} = state) do
+
+    base_record = %UnidadeRecebivel{
+      cnpf_cnpf_ufr: state.current_record.cnpf_cnpf_ufr,
+      cd_arranjo: state.current_record.cd_arranjo,
+      vlr_total: state.current_record.vlr_total,
+      dt_prevt_liq: state.current_record.dt_prevt_liq
+    }
+    {:ok, %{state | records: [state.current_record | state.records], current_record: base_record}}
   end
+
+  def handle_event(:end_element, "Grupo_ARRC001_UniddRecbvl", state) do
+    base_record = %UnidadeRecebivel{
+      cnpf_cnpf_ufr: state.current_record.cnpf_cnpf_ufr,
+      cd_arranjo: state.current_record.cd_arranjo
+    }
+    {:ok, %{state | current_record: base_record}}
+  end
+
+  # def handle_event(:end_element, "Grupo_ARRC001_UniddRecbvl", state) do
+  #   {:ok, %{state | records: [state.current_record | state.records], current_record: nil}}
+  # end
 
   ##Inícios de tags de tipos conhecidos
   def handle_event(:start_element, {name, _attributes}, %{current_record: %Bcarq{}} = state) do
