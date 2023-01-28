@@ -25,6 +25,7 @@ defmodule Parser.Arrc001Handler do
       dt_prevt_liq: state.current_record.dt_prevt_liq
     }
     {:ok, %{state | records: [state.current_record | state.records], current_record: base_record}}
+    # {:ok, %{state |  current_record: base_record}}
   end
 
   def handle_event(:end_element, "Grupo_ARRC001_UniddRecbvl", state) do
@@ -54,8 +55,18 @@ defmodule Parser.Arrc001Handler do
       "CNPJ_CPFUsuFinalRecbdr"  -> {:ok, %{state | current_record: %{state.current_record | cnpf_cnpf_ufr: chars}}}
       "CodInstitdrArrajPgto"    -> {:ok, %{state | current_record: %{state.current_record | cd_arranjo: chars}}}
       "DtPrevtLiquid"           -> {:ok, %{state | current_record: %{state.current_record | dt_prevt_liq: Date.from_iso8601(chars)}}}
-      "VlrTot"                  -> {:ok, %{state | current_record: %{state.current_record | vlr_total: Decimal.new(chars)}}}
-      "VlrPrevtLiquid"          -> {:ok, %{state | current_record: %{state.current_record | vlr_prevt_liq: Decimal.new(chars)}}}
+      "VlrTot"                  -> {:ok, %{state | current_record: %{state.current_record | vlr_total: Decimal.round(Decimal.new(chars),2,:half_even)}}}
+      "VlrPreContrd"            -> {:ok, %{state | current_record: %{state.current_record | vlr_pre_contr: Decimal.new(chars)}}}
+      "CNPJ_CPFTitlarCt"        -> {:ok, %{state | current_record: %{state.current_record | cnpf_cnpf_tit_ct: chars}}}
+      "ISPBBcoRecbdr"           -> {:ok, %{state | current_record: %{state.current_record | ispb_bco_recb: String.to_integer(chars)}}}
+      "TpCt"                    -> {:ok, %{state | current_record: %{state.current_record | tp_ct: chars}}}
+      "Ag"                      -> {:ok, %{state | current_record: %{state.current_record | ag: chars}}}
+      "Ct"                      -> {:ok, %{state | current_record: %{state.current_record | ct: chars}}}
+      "CtPgto"                  -> {:ok, %{state | current_record: %{state.current_record | ct_pgto: chars}}}
+      "VlrPrevtLiquid"          -> {:ok, %{state | current_record: %{state.current_record | vlr_prevt_liq: Decimal.round(Decimal.new(chars),2,:half_even)}}}
+      "DtEftLiquid"             -> {:ok, %{state | current_record: %{state.current_record | dt_eft_liq: Date.from_iso8601(chars)}}}
+      "VlrEftLiquid"            -> {:ok, %{state | current_record: %{state.current_record | vlr_eft_liq: Decimal.round(Decimal.new(chars),2,:half_even)}}}
+      "IdentdOp"                -> {:ok, %{state | current_record: %{state.current_record | id_op: Decimal.new(chars)}}}
       _ -> {:ok, state}
     end
   end

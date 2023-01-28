@@ -1,6 +1,16 @@
 defmodule ParseXml do
   def parse_xml do
-    xml_file = "./arrc001/ARRC001_01027058_20200110_00002.xml"
+    xml_file = "./arrc001/ARRC001_01027058_20200110_00001.xml"
+    case File.stream!(xml_file)
+        |> Stream.filter(&(&1 != "\n "))
+        |>Saxy.parse_stream(Parser.Arrc001Handler, nil) do
+      {:ok, state} -> {:ok, state}
+      {:error, err} -> {:error, err}
+    end
+  end
+
+  def parse_xml_with_validation do
+    xml_file = "./arrc001/ARRC001_01027058_20200110_00001.xml"
     xsd = "./arrc001/ARRC001.xsd"
     #validação do XSD
     case :erlsom.compile_xsd_file(xsd, include_dirs: ["arrc001"]) do
@@ -8,15 +18,7 @@ defmodule ParseXml do
       {:ok, model} -> validade(xml_file, model)
     end
 
-    # ok, agora parse para registros:
-    stream =
-      File.stream!(xml_file)
-      |> Stream.filter(&(&1 != "\n "))
-
-    case Saxy.parse_stream(stream, Parser.Arrc001Handler, nil) do
-      {:ok, state} -> {:ok, state}
-      {:error, err} -> {:error, err}
-    end
+    parse_xml()
   end
 
   def validade(xml_file, model) do
@@ -26,13 +28,4 @@ defmodule ParseXml do
     end
   end
 
-  def time_of(function, args) do
-    :timer.tc(function, args)
-  end
-
-  def do_parse do
-    {time, result} = ParseXml.time_of(&parse_xml/0, [])
-    IO.puts("Time: #{time / 1000}ms")
-    result
-  end
 end
